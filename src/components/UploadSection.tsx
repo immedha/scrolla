@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectProSubscription } from '../store/user/userSlice';
 import { setPageStateInfoAction } from '../store/global/globalActions';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import { getCreatedApp } from '../firebaseConfig';
+import { app } from '../firebase';
 
 const UploadSection: FC = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const UploadSection: FC = () => {
 
     try {
       setIsUploading(true);
-      const storage = getStorage(getCreatedApp());
+      const storage = getStorage(app);
       
       const uploads = Array.from(files).map(async (file) => {
         const storageRef = ref(storage, `pdfs/${file.name}`);

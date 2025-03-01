@@ -4,16 +4,17 @@ import Navigation from './Navigation';
 
 interface MainLayoutProps {
   children: ReactNode;
+  isLoggedIn: boolean;
 }
 
-const MainLayout: FC<MainLayoutProps> = ({ children }) => {
+const MainLayout: FC<MainLayoutProps> = ({ children, isLoggedIn }) => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
       <main className="pb-16"> {/* Add padding bottom to account for navigation */}
         {children}
       </main>
-      <Navigation />
+      {isLoggedIn && <Navigation />}
     </div>
   );
 };
