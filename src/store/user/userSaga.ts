@@ -1,11 +1,12 @@
 import { getAdditionalUserInfo, signInWithPopup, signOut, UserCredential } from "firebase/auth";
 import { all, call, put, takeEvery } from "redux-saga/effects";
-import { fetchInitialDataAction, fetchInitialDataActionFormat, signInAction, signOutAction } from "./userActions";
+import { fetchInitialDataAction, fetchInitialDataActionFormat, generateVideosAction, generateVideosActionFormat, saveGeneratedVideosAction, saveGeneratedVideosActionFormat, signInAction, signOutAction } from "./userActions";
 import { auth, provider } from "../../firebase";
-import { setUserData, setUserId } from "./userSlice";
+import { addVideos, setUserData, setUserId } from "./userSlice";
 import { setPageStateInfoAction } from "../global/globalActions";
-import { addNewUserToDb, fetchUserData } from "../../dbQueries";
-import { UserDbData } from "../storeStates";
+import { addNewUserToDb, addVideosToDb, fetchUserData } from "../../dbQueries";
+import { UserDbData, Video } from "../storeStates";
+import { setNewlyGeneratedVideos } from "../global/globalSlice";
 
 
 function* signIn() {
@@ -55,10 +56,40 @@ function* fetchInitialData(action: fetchInitialDataActionFormat) {
   }
 }
 
+function* generateVideos(_action: generateVideosActionFormat) {
+  try {
+    // const { userId, files } = action.payload; // TODO: use this to generate videos
+    const videos: Video[] = Array.from({length: 10}, (_, i) => ({
+      videoUrl: `https://www.youtube.com/watch?v=${i}`,
+      liked: false,
+      title: `Video ${i}`,
+      category: 'misc'
+    }));
+    yield put(setNewlyGeneratedVideos(videos));
+  } catch (error: any) {
+    console.error(error);
+    yield put(setPageStateInfoAction({type: 'error', message: error.message}));
+  }
+}
+
+function* saveGeneratedVideos(action: saveGeneratedVideosActionFormat) {
+  try {
+    const { userId, videos } = action.payload;
+    yield call(addVideosToDb, userId, videos);
+    yield put(addVideos(videos));
+    yield put(setNewlyGeneratedVideos([]));
+  } catch (error: any) {
+    console.error(error);
+    yield put(setPageStateInfoAction({type: 'error', message: error.message}));
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeEvery(signInAction.type, signIn),
     takeEvery(signOutAction.type, logOut),
-    takeEvery(fetchInitialDataAction.type, fetchInitialData)
+    takeEvery(fetchInitialDataAction.type, fetchInitialData),
+    takeEvery(generateVideosAction.type, generateVideos),
+    takeEvery(saveGeneratedVideosAction.type, saveGeneratedVideos),
   ]);
 }

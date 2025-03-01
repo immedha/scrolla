@@ -30,12 +30,12 @@ const Profile = () => {
       <div className="w-full mb-6">
         <h2 className="text-2xl font-semibold mb-4">Liked Videos</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-h-96 overflow-y-auto">
-          {videos.map((_video, index) => (
+          {videos.map((video, index) => (
             <div
               key={index}
               className="bg-gray-300 h-48 w-full rounded-lg flex items-center justify-center text-center text-white"
             >
-              test video
+              {video.title}
             </div>
           ))}
         </div>

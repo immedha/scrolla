@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NotFound from './pages/NotFound';
 import LandingPage from './pages/LandingPage';
 import Profile from './pages/Profile';
+import Feed from './pages/Feed';
 
 function App() {
   const dispatch = useDispatch();
@@ -37,8 +38,7 @@ function App() {
     <BrowserRouter>
       <MainLayout isLoggedIn={!!userId}>
         <Routes>
-          <Route path="/" element={<LandingPage page=""/>} />\
-          <Route path="/home" element={userId ? <LandingPage /> : <LandingPage page="home"/>} />
+          <Route path="/" element={userId ? <Feed /> : <LandingPage page=""/>} />
           <Route path="/upload" element={userId ? <UploadSection /> : <LandingPage page="upload"/>} />
           <Route path="/profile" element={userId ? <Profile /> : <LandingPage page="profile"/>} />
           <Route path="*" element={<NotFound />} />

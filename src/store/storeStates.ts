@@ -6,6 +6,7 @@ export interface allSlicesState {
 export interface GlobalSliceState {
   pageState: "loading" | "error" | "idle" | "success";
   stateMessage: string | null;
+  newlyGeneratedVideos: Video[];
 }
 
 export interface UserSliceState extends UserDbData {
@@ -25,3 +26,6 @@ export interface UserDbData {
   isProSubscription: boolean;
   videos: Video[];
 }
+
+export const FREE_SUBSCRIPTION_FILES = 5;
+export const PRO_SUBSCRIPTION_FILES = 50;
