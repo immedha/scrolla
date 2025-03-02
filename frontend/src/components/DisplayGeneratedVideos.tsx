@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectNewlyGeneratedVideos } from "../store/global/globalSlice";
-import { Video } from "../store/storeStates";
 import { saveGeneratedVideosAction } from "../store/user/userActions";
 import { selectUserId } from "../store/user/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -31,7 +30,7 @@ const DisplayGeneratedVideos = ({ setGenerationState }: DisplayGeneratedVideosPr
         <button onClick={() => setViewVideoIdx(null)} className="p-2 rounded-full hover:bg-gray-200">
           <BackIcon />
         </button>
-        <VideoPlayer videos={newlyGeneratedVideos} origVideoIdx={viewVideoIdx} swipeType="horizontal"/>
+        <VideoPlayer videos={newlyGeneratedVideos} origVideoIdx={viewVideoIdx} />
       </div>
     );
   }

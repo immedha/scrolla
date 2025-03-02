@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Volume2, VolumeX, Pause, Play, Heart } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX, Pause, Play, Heart, ChevronDown, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Video } from "../store/storeStates";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,12 +9,13 @@ import { setLikedVideoAction } from "../store/user/userActions";
 interface VideoPlayerProps {
   origVideoIdx: number;
   videos: Video[];
-  swipeType: 'vertical' | 'horizontal';
   allowModify?: boolean;
 }
 
-const VideoPlayer = ({ videos, origVideoIdx, swipeType, allowModify }: VideoPlayerProps) => {
+const VideoPlayer = ({ videos, origVideoIdx, allowModify }: VideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const feedRef = useRef<HTMLDivElement>(null);
+
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showPauseIcon, setShowPauseIcon] = useState<'pause' | 'play' | null>(null);
@@ -22,67 +23,40 @@ const VideoPlayer = ({ videos, origVideoIdx, swipeType, allowModify }: VideoPlay
   const dispatch = useDispatch();
   const userId: string = useSelector(selectUserId) || '';
 
-  const startX = useRef(0); // Keep track of starting X position for swipe
-  const startY = useRef(0); // Keep track of starting Y position for swipe
-  const isDragging = useRef(false); // Track if mouse is dragging
-
   const handleToggleLikeVideo = () => {
     dispatch(setLikedVideoAction({ userId, videoIdx: currVideoIdx, liked: !videos[currVideoIdx].liked }));
   }
+  console.log('rerending');
 
-  // Mouse down event handler
-  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
-    isDragging.current = true;
-    startX.current = 'touches' in e ? e.touches[0].clientX : e.clientX; // Get touch or mouse X position
-    startY.current = 'touches' in e ? e.touches[0].clientY : e.clientY; // Get touch or mouse Y position
-  };
+  const isScrolling = useRef(false); // Prevents excessive scroll events
 
-  // Mouse move event handler
-  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDragging.current) return;
+  useEffect(() => {
+    const handleScroll = (event: WheelEvent) => {
+      if (isScrolling.current) return; // Prevent spam scrolling
 
-    const moveX = 'touches' in e ? e.touches[0].clientX - startX.current : e.clientX - startX.current; // Calculate horizontal movement
-    const moveY = 'touches' in e ? e.touches[0].clientY - startY.current : e.clientY - startY.current; // Calculate vertical movement
+      // Set a cooldown time to prevent rapid scrolls
+      isScrolling.current = true;
+      setTimeout(() => {
+        isScrolling.current = false;
+      }, 800); // Adjust the cooldown time (in ms) to control sensitivity
 
-    // Swipe left
-    if (moveX < -100 && swipeType === 'horizontal') {
-      if (currVideoIdx < videos.length - 1) {
-        setCurrVideoIdx(currVideoIdx + 1);
-        isDragging.current = false;
+      // Scroll sensitivity threshold (prevents tiny scrolls from triggering)
+      // if (Math.abs(event.deltaY) < 20) return;
+
+      if (event.deltaY > 0 && currVideoIdx < videos.length - 1) {
+        setCurrVideoIdx((prev) => prev + 1);
+      } else if (event.deltaY < 0 && currVideoIdx > 0) {
+        setCurrVideoIdx((prev) => prev - 1);
       }
-    } 
-    // Swipe right
-    else if (moveX > 100 && swipeType === 'horizontal') {
-      if (currVideoIdx > 0) {
-        setCurrVideoIdx(currVideoIdx - 1);
-        isDragging.current = false;
-      }
-    }
-    // Swipe down
-    else if (moveY > 100 && swipeType === 'vertical') {
-      if (currVideoIdx < videos.length - 1) {
-        setCurrVideoIdx(currVideoIdx + 1); // Move to the next video
-        isDragging.current = false; // Stop dragging after the swipe
-      }
-    }
-    // Swipe up
-    else if (moveY < -100 && swipeType === 'vertical') {
-      if (currVideoIdx > 0) {
-        setCurrVideoIdx(currVideoIdx - 1); // Move to the previous video
-        isDragging.current = false; // Stop dragging after the swipe
-      }
-    }
-  };
+    };
 
-  // Mouse up event handler
-  const handleMouseUp = () => {
-    isDragging.current = false; // Stop dragging when mouse or touch is released
-  };
+    const feedEl = feedRef.current;
+    if (feedEl) feedEl.addEventListener("wheel", handleScroll);
 
-  // Mouse leave event handler
-  const handleMouseLeave = () => {
-    isDragging.current = false; // Stop dragging if mouse leaves the video area
-  };
+    return () => {
+      if (feedEl) feedEl.removeEventListener("wheel", handleScroll);
+    };
+  }, [currVideoIdx]);
 
   const togglePlayPause = () => {
     const video = videoRef.current;
@@ -104,14 +78,7 @@ const VideoPlayer = ({ videos, origVideoIdx, swipeType, allowModify }: VideoPlay
   return (
     <div
       className="relative w-full h-screen flex items-center justify-center bg-black"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleMouseDown} // Add touch events
-      onTouchMove={handleMouseMove}  // Add touch events
-      onTouchEnd={handleMouseUp}     // Add touch events
-      onTouchCancel={handleMouseUp}  // Add touch events
+      ref={feedRef}
     >
       <motion.video
         ref={videoRef}
@@ -171,6 +138,26 @@ const VideoPlayer = ({ videos, origVideoIdx, swipeType, allowModify }: VideoPlay
         <h3 className="text-lg font-semibold text-white">{videos[currVideoIdx].title}</h3>
         <p className="text-sm text-white">{videos[currVideoIdx].category}</p>
       </div>
+      <button
+        onClick={() => {console.log('up'); setCurrVideoIdx(currVideoIdx - 1);}}
+        className={`fixed right-8 top-1/2 -translate-y-20 p-3 rounded-full bg-black/20 backdrop-blur-sm transition-all ${
+          currVideoIdx === 0 ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer opacity-70 hover:bg-black/40 hover:opacity-100'
+        }`}
+        disabled={currVideoIdx === 0}
+      >
+        <ChevronUp className="w-6 h-6 text-white" />
+      </button>
+
+      {/* Down Arrow */}
+      <button
+        onClick={() => {console.log('down'); setCurrVideoIdx(currVideoIdx + 1);}}
+        className={`fixed right-8 top-1/2 translate-y-20 p-3 rounded-full bg-black/20 backdrop-blur-sm transition-all ${
+          currVideoIdx === videos.length - 1 ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer hover:bg-black/40 opacity-70 hover:opacity-100'
+        }`}
+        disabled={currVideoIdx === videos.length - 1}
+      >
+        <ChevronDown className="w-6 h-6 text-white" />
+      </button>
     </div>
   );
 };

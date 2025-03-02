@@ -55,7 +55,6 @@ const Profile = () => {
           <VideoPlayer 
             videos={videos.filter(video => video.liked)} 
             origVideoIdx={viewVideoIdx} 
-            swipeType="horizontal"
             allowModify={false}
           />
 
