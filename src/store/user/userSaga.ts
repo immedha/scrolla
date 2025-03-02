@@ -8,8 +8,10 @@ import { addNewUserToDb, addVideosToDb, fetchUserData } from "../../dbQueries";
 import { UserDbData, Video } from "../storeStates";
 import { setNewlyGeneratedVideos } from "../global/globalSlice";
 
+// API base URL - change this to your backend URL
+const API_BASE_URL = 'http://localhost:5003/api';
 
-function* signIn() {
+function* signIn(): Generator<any, void, any> {
   try {
     const result: UserCredential = yield call(signInWithPopup, auth, provider);
     const isNewUser = getAdditionalUserInfo(result)?.isNewUser;
@@ -29,7 +31,7 @@ function* signIn() {
   }
 }
 
-function* logOut() {
+function* logOut(): Generator<any, void, any> {
   try {
     yield signOut(auth);
     yield put(setUserId(null));
@@ -39,7 +41,7 @@ function* logOut() {
   }
 }
 
-function* fetchInitialData(action: fetchInitialDataActionFormat) {
+function* fetchInitialData(action: fetchInitialDataActionFormat): Generator<any, void, any> {
   try {
     const { userId } = action.payload;
     // call a fetch function to get user data from db and load it into the redux store
@@ -56,23 +58,104 @@ function* fetchInitialData(action: fetchInitialDataActionFormat) {
   }
 }
 
-function* generateVideos(_action: generateVideosActionFormat) {
+// Helper function to upload files to the backend
+function uploadFilesToBackend(userId: string, files: string[]) {
+  return async () => {
+    try {
+      // For each Firebase URL, we need to fetch the file and then upload it to our backend
+      const formData = new FormData();
+      formData.append('userId', userId);
+      
+      // Fetch each file from Firebase and add to form data
+      for (const fileUrl of files) {
+        const response = await fetch(fileUrl);
+        const blob = await response.blob();
+        
+        // Get filename from URL
+        const urlParts = fileUrl.split('/');
+        const filename = urlParts[urlParts.length - 1];
+        
+        formData.append('files', blob, filename);
+      }
+      
+      // Upload files to backend
+      const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!uploadResponse.ok) {
+        const errorData = await uploadResponse.json();
+        throw new Error(errorData.error || 'Failed to upload files');
+      }
+      
+      const uploadData = await uploadResponse.json();
+      return uploadData.files;
+    } catch (error) {
+      console.error('Error uploading files:', error);
+      throw error;
+    }
+  };
+}
+
+// Helper function to generate videos using the backend
+function generateVideosFromBackend(userId: string, filePaths: string[]) {
+  return async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          files: filePaths,
+        }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate videos');
+      }
+      
+      const data = await response.json();
+      return data.videos;
+    } catch (error) {
+      console.error('Error generating videos:', error);
+      throw error;
+    }
+  };
+}
+
+function* generateVideos(action: generateVideosActionFormat): Generator<any, void, any> {
   try {
-    // const { userId, files } = action.payload; // TODO: use this to generate videos
-    const videos: Video[] = Array.from({length: 10}, (_, i) => ({
-      videoUrl: `https://www.youtube.com/watch?v=${i}`,
-      liked: false,
-      title: `Video ${i}`,
-      category: 'misc'
-    }));
+    const { userId, files } = action.payload;
+    
+    // Show loading message
+    yield put(setPageStateInfoAction({type: 'loading', message: 'Uploading files to the backend...'}));
+    
+    // 1. Upload files to our backend
+    const uploadedFilePaths = yield call(uploadFilesToBackend(userId, files));
+    
+    // Update loading message
+    yield put(setPageStateInfoAction({type: 'loading', message: 'Generating videos...'}));
+    
+    // 2. Generate videos using our backend
+    const videos: Video[] = yield call(generateVideosFromBackend(userId, uploadedFilePaths));
+    
+    // 3. Update the store with the generated videos
     yield put(setNewlyGeneratedVideos(videos));
+    
+    // 4. Show success message
+    yield put(setPageStateInfoAction({type: 'success', message: 'Videos generated successfully!'}));
+    
   } catch (error: any) {
     console.error(error);
-    yield put(setPageStateInfoAction({type: 'error', message: error.message}));
+    yield put(setPageStateInfoAction({type: 'error', message: error.message || 'Failed to generate videos'}));
   }
 }
 
-function* saveGeneratedVideos(action: saveGeneratedVideosActionFormat) {
+function* saveGeneratedVideos(action: saveGeneratedVideosActionFormat): Generator<any, void, any> {
   try {
     const { userId, videos } = action.payload;
     yield call(addVideosToDb, userId, videos);
