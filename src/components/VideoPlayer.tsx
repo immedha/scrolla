@@ -1,18 +1,20 @@
 import { useRef, useState } from "react";
 import { Volume2, VolumeX, Pause, Play } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Video } from "../store/storeStates";
 
 interface VideoPlayerProps {
-  videoUrl: string;
+  origVideoIdx: number;
+  videos: Video[];
 }
 
-const VideoPlayer = ({ videoUrl }: VideoPlayerProps) => {
+const VideoPlayer = ({ videos, origVideoIdx }: VideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showPauseIcon, setShowPauseIcon] = useState<'pause' | 'play' | null>(null);
+  const [currVideoIdx, _setCurrVideoIdx] = useState(origVideoIdx);
 
-  // Handle play/pause on click
   const togglePlayPause = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -26,26 +28,24 @@ const VideoPlayer = ({ videoUrl }: VideoPlayerProps) => {
     }
     setIsPlaying(!isPlaying);
 
-    // Show quick pause animation like Instagram
     setShowPauseIcon(pauseOrPlay);
-    setTimeout(() => setShowPauseIcon(null), 500); // Hide after 0.5s
+    setTimeout(() => setShowPauseIcon(null), 500);
   };
 
   return (
     <div className="relative w-full h-screen flex items-center justify-center bg-black">
-      {/* Video */}
+      
       <video
         ref={videoRef}
-        src={videoUrl}
+        src={videos[currVideoIdx].videoUrl}
         className="w-full h-full object-cover"
         autoPlay={true}
         loop
         muted={isMuted}
         playsInline
-        onClick={togglePlayPause} // Click to pause/play
+        onClick={togglePlayPause}
       />
 
-      {/* Pause Icon Animation (shows briefly when clicking video) */}
       <AnimatePresence>
         {showPauseIcon !== null && (
           <motion.div
@@ -64,7 +64,6 @@ const VideoPlayer = ({ videoUrl }: VideoPlayerProps) => {
         )}
       </AnimatePresence>
 
-      {/* Controls */}
       <div className="absolute bottom-6 left-0 right-0 px-4 flex items-center justify-between">
         <button
           onClick={() => setIsMuted(!isMuted)}

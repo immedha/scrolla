@@ -18,24 +18,23 @@ const DisplayGeneratedVideos = ({ setGenerationState}: DisplayGeneratedVideosPro
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [viewVideo, setViewVideo] = useState<Video | null>(null);
+  const [viewVideoIdx, setViewVideoIdx] = useState<number | null>(null);
 
   const saveVideos = () => {
     dispatch(saveGeneratedVideosAction({ userId, videos: newlyGeneratedVideos }));
     navigate('/');
   }
 
-  if (viewVideo) {
+  if (viewVideoIdx !== null) {
     return (
       <div>
-        <button onClick={() => setViewVideo(null)} className="p-2 rounded-full hover:bg-gray-200">
+        <button onClick={() => setViewVideoIdx(null)} className="p-2 rounded-full hover:bg-gray-200">
           <BackIcon />
         </button>
-        <VideoPlayer videoUrl={viewVideo.videoUrl} />
+        <VideoPlayer videos={newlyGeneratedVideos} origVideoIdx={viewVideoIdx} />
       </div>
     );
   }
-
 
   return (
     <div>
@@ -48,7 +47,7 @@ const DisplayGeneratedVideos = ({ setGenerationState}: DisplayGeneratedVideosPro
             <div
               key={index}
               className="bg-gray-300 h-48 w-full rounded-lg flex items-center justify-center text-center text-white cursor-pointer"
-              onClick={() => setViewVideo(video)}
+              onClick={() => setViewVideoIdx(index)}
             >
               {video.title}
             </div>

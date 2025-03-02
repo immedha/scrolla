@@ -2,22 +2,21 @@ import { useSelector } from "react-redux";
 import { selectUserName, selectVideos } from "../store/user/userSlice";
 import { useMemo, useState } from "react";
 import { BackIcon } from "../components/Icons";
-import { Video } from "../store/storeStates";
 import VideoPlayer from "../components/VideoPlayer";
 
 const Profile = () => {
   const videos = useSelector(selectVideos);
   const userName: string = useSelector(selectUserName) || '';
   const lowercaseUserName = useMemo(() => userName.replace(/\s+/g, '').toLowerCase(), [userName]);
-  const [viewVideo, setViewVideo] = useState<Video | null>(null);
+  const [viewVideoIdx, setViewVideoIdx] = useState<number | null>(null);
 
-  if (viewVideo) {
+  if (viewVideoIdx !== null) {
     return (
       <div>
-        <button onClick={() => setViewVideo(null)} className="p-2 rounded-full hover:bg-gray-200">
+        <button onClick={() => setViewVideoIdx(null)} className="p-2 rounded-full hover:bg-gray-200">
           <BackIcon />
         </button>
-        <VideoPlayer videoUrl={viewVideo.videoUrl} />
+        <VideoPlayer videos={videos} origVideoIdx={viewVideoIdx} />
       </div>
     );
   }
@@ -49,7 +48,7 @@ const Profile = () => {
             <div
               key={index}
               className="bg-gray-300 h-48 w-full rounded-lg flex items-center justify-center text-center text-white cursor-pointer"
-              onClick={() => setViewVideo(video)}
+              onClick={() => setViewVideoIdx(index)}
             >
               {video.title}
             </div>
