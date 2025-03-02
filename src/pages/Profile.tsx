@@ -16,7 +16,7 @@ const Profile = () => {
         <button onClick={() => setViewVideoIdx(null)} className="p-2 rounded-full hover:bg-gray-200">
           <BackIcon />
         </button>
-        <VideoPlayer videos={videos} origVideoIdx={viewVideoIdx} />
+        <VideoPlayer videos={videos} origVideoIdx={viewVideoIdx} swipeType="horizontal"/>
       </div>
     );
   }
@@ -44,14 +44,14 @@ const Profile = () => {
       <div className="w-full mb-6">
         <h2 className="text-2xl font-semibold mb-4">Liked Videos</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-h-96 overflow-y-auto">
-          {videos.map((video, index) => (
-            <div
-              key={index}
-              className="bg-gray-300 h-48 w-full rounded-lg flex items-center justify-center text-center text-white cursor-pointer"
-              onClick={() => setViewVideoIdx(index)}
-            >
-              {video.title}
-            </div>
+          {videos.filter(video => video.liked).map((video, index) => (
+          <div
+            key={index}
+            className="bg-gray-300 h-48 w-full rounded-lg flex items-center justify-center text-center text-white cursor-pointer"
+            onClick={() => setViewVideoIdx(index)}
+          >
+            {video.title}
+          </div>
           ))}
         </div>
       </div>

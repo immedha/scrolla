@@ -1,19 +1,22 @@
 import { getAdditionalUserInfo, signInWithPopup, signOut, UserCredential } from "firebase/auth";
 import { all, call, put, takeEvery } from "redux-saga/effects";
-import { fetchInitialDataAction, fetchInitialDataActionFormat, generateVideosAction, generateVideosActionFormat, saveGeneratedVideosAction, saveGeneratedVideosActionFormat, signInAction, signOutAction } from "./userActions";
+import { fetchInitialDataAction, fetchInitialDataActionFormat, generateVideosAction, generateVideosActionFormat, saveGeneratedVideosAction, saveGeneratedVideosActionFormat, setLikedVideoAction, setLikedVideoActionFormat, signInAction, signOutAction } from "./userActions";
 import { auth, provider } from "../../firebase";
-import { addVideos, setUserData, setUserId } from "./userSlice";
+import { addVideos, setLikeStatusOfVideo, setUserData, setUserId } from "./userSlice";
 import { setPageStateInfoAction } from "../global/globalActions";
-import { addNewUserToDb, addVideosToDb, fetchUserData } from "../../dbQueries";
+import { addNewUserToDb, addVideosToDb, fetchUserData, setLikedVideoInDb } from "../../dbQueries";
 import { UserDbData, Video } from "../storeStates";
 import { setNewlyGeneratedVideos } from "../global/globalSlice";
 
 // API base URL - change this to your backend URL
 const API_BASE_URL = 'http://localhost:5003/api';
 
-function* signIn(): Generator<any, void, any> {
+// Using a more generic type for the Generator functions
+type SagaGenerator = Generator<unknown, void, unknown>;
+
+function* signIn(): SagaGenerator {
   try {
-    const result: UserCredential = yield call(signInWithPopup, auth, provider);
+    const result = (yield call(signInWithPopup, auth, provider)) as UserCredential;
     const isNewUser = getAdditionalUserInfo(result)?.isNewUser;
     if (isNewUser) {
       const newUser: UserDbData = {
@@ -25,36 +28,39 @@ function* signIn(): Generator<any, void, any> {
       yield call(addNewUserToDb, result.user.uid, newUser); 
     }
     yield put(setUserId("" + result.user.uid));
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    yield put(setPageStateInfoAction({type: 'error', message: error.message}));
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    yield put(setPageStateInfoAction({type: 'error', message: errorMessage}));
   }
 }
 
-function* logOut(): Generator<any, void, any> {
+function* logOut(): SagaGenerator {
   try {
     yield signOut(auth);
     yield put(setUserId(null));
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    yield put(setPageStateInfoAction({type: 'error', message: error.message}));
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    yield put(setPageStateInfoAction({type: 'error', message: errorMessage}));
   }
 }
 
-function* fetchInitialData(action: fetchInitialDataActionFormat): Generator<any, void, any> {
+function* fetchInitialData(action: fetchInitialDataActionFormat): SagaGenerator {
   try {
     const { userId } = action.payload;
     // call a fetch function to get user data from db and load it into the redux store
-    const allUserData: UserDbData = yield call(fetchUserData, userId);
+    const allUserData = (yield call(fetchUserData, userId)) as UserDbData;
     yield put(setUserData({
       username: allUserData.userName, 
       userEmail: allUserData.userEmail, 
       isProSubscriptino: allUserData.isProSubscription,
       videos: allUserData.videos
     }));
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    yield put(setPageStateInfoAction({type: 'error', message: error.message}));
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    yield put(setPageStateInfoAction({type: 'error', message: errorMessage}));
   }
 }
 
@@ -127,7 +133,19 @@ function generateVideosFromBackend(userId: string, filePaths: string[]) {
   };
 }
 
-function* generateVideos(action: generateVideosActionFormat): Generator<any, void, any> {
+function* setLikedVideo(action: setLikedVideoActionFormat): SagaGenerator {
+  try {
+    const { userId, videoIdx, liked } = action.payload; // TODO: use this to set liked status of a video
+    yield call(setLikedVideoInDb, userId, videoIdx, liked);
+    yield put(setLikeStatusOfVideo({ videoIdx, liked }));
+  } catch (error: unknown) {
+    console.error(error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    yield put(setPageStateInfoAction({type: 'error', message: errorMessage}));
+  }
+}
+
+function* generateVideos(action: generateVideosActionFormat): SagaGenerator {
   try {
     const { userId, files } = action.payload;
     
@@ -135,13 +153,13 @@ function* generateVideos(action: generateVideosActionFormat): Generator<any, voi
     yield put(setPageStateInfoAction({type: 'loading', message: 'Uploading files to the backend...'}));
     
     // 1. Upload files to our backend
-    const uploadedFilePaths = yield call(uploadFilesToBackend(userId, files));
+    const uploadedFilePaths = (yield call(uploadFilesToBackend(userId, files))) as string[];
     
     // Update loading message
     yield put(setPageStateInfoAction({type: 'loading', message: 'Generating videos...'}));
     
     // 2. Generate videos using our backend
-    const videos: Video[] = yield call(generateVideosFromBackend(userId, uploadedFilePaths));
+    const videos = (yield call(generateVideosFromBackend(userId, uploadedFilePaths))) as Video[];
     
     // 3. Update the store with the generated videos
     yield put(setNewlyGeneratedVideos(videos));
@@ -149,21 +167,23 @@ function* generateVideos(action: generateVideosActionFormat): Generator<any, voi
     // 4. Show success message
     yield put(setPageStateInfoAction({type: 'success', message: 'Videos generated successfully!'}));
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    yield put(setPageStateInfoAction({type: 'error', message: error.message || 'Failed to generate videos'}));
+    const errorMessage = error instanceof Error ? error.message : 'Failed to generate videos';
+    yield put(setPageStateInfoAction({type: 'error', message: errorMessage}));
   }
 }
 
-function* saveGeneratedVideos(action: saveGeneratedVideosActionFormat): Generator<any, void, any> {
+function* saveGeneratedVideos(action: saveGeneratedVideosActionFormat): SagaGenerator {
   try {
     const { userId, videos } = action.payload;
     yield call(addVideosToDb, userId, videos);
     yield put(addVideos(videos));
     yield put(setNewlyGeneratedVideos([]));
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    yield put(setPageStateInfoAction({type: 'error', message: error.message}));
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    yield put(setPageStateInfoAction({type: 'error', message: errorMessage}));
   }
 }
 
@@ -174,5 +194,6 @@ export default function* userSaga() {
     takeEvery(fetchInitialDataAction.type, fetchInitialData),
     takeEvery(generateVideosAction.type, generateVideos),
     takeEvery(saveGeneratedVideosAction.type, saveGeneratedVideos),
+    takeEvery(setLikedVideoAction.type, setLikedVideo),
   ]);
 }

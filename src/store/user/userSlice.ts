@@ -37,10 +37,14 @@ const userSlice = createSlice({
       state.isProSubscription = action.payload.isProSubscription;
       state.videos = action.payload.videos;
     },
+    setLikeStatusOfVideo: (state, action) => {
+      const { videoIdx, liked } = action.payload;
+      state.videos[videoIdx].liked = liked;
+    },
   }
 });
 
-export const { setUserData, setUserId, setUserName, setUserEmail, setProSubscription, setVideos, addVideos } = userSlice.actions;
+export const { setLikeStatusOfVideo, setUserData, setUserId, setUserName, setUserEmail, setProSubscription, setVideos, addVideos } = userSlice.actions;
 export const selectUserId = (state: allSlicesState) => state.user.userId;
 export const selectUserName = (state: allSlicesState) => state.user.userName;
 export const selectUserEmail = (state: allSlicesState) => state.user.userEmail;
