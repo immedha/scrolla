@@ -2,8 +2,7 @@
 
 # Scrolla ⭐ - Endless scroll meets endless knowledge
 
-![scrolla](https://github.com/user-attachments/assets/3cce01de-57e9-41ea-8c77-43517d33ce22)
-
+![scrolla](https://firebasestorage.googleapis.com/v0/b/daily-ai-challenge.firebasestorage.app/o/scrolla_logo.png?alt=media&token=b55f7cac-f756-4755-9e26-83ea67bacce0)
 </div>
 
 View our presentation: https://youtu.be/E2xazE2n2Z8https://youtu.be/E2xazE2n2Z8 
@@ -23,8 +22,7 @@ Scrolla for SacHacks VI. Our dedicated team members are
 ## Why Scrolla ? 
 In today's era, where short-form content like reels dominates social media, we saw an opportunity to bridge the gap between in-depth narratives and engaging video formats. Our mission is to revolutionize content creation by leveraging cutting-edge AI to transform long-form content into captivating short-form videos that bring the best of both worlds together.
 
-
-<img width="790" alt="Screenshot 2025-03-02 at 6 15 15 PM" src="https://github.com/user-attachments/assets/fda1ba56-34d0-4764-897b-4a3a56b6c000" />
+![ui](https://firebasestorage.googleapis.com/v0/b/daily-ai-challenge.firebasestorage.app/o/ui.png?alt=media&token=9b7d7b57-f93d-4d58-8a41-cb349ac2c0b7)
 <br> 
 
 ## Key Features
@@ -39,7 +37,7 @@ In today's era, where short-form content like reels dominates social media, we s
 
 ## Architecture Flow 
 
-![Architecture (1)](https://github.com/user-attachments/assets/08f970b6-c98b-435d-81be-e9b0a9fb5bdf)
+![Architecture (1)](https://firebasestorage.googleapis.com/v0/b/daily-ai-challenge.firebasestorage.app/o/Architecture_1.jpg?alt=media&token=bd8203d6-8b76-42f7-a466-4b4a9336be6b)
 
 | **Category**           | **Technologies**                                      |
 |------------------------|------------------------------------------------------|
