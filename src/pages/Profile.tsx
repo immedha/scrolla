@@ -56,6 +56,7 @@ const Profile = () => {
             videos={videos.filter(video => video.liked)} 
             origVideoIdx={viewVideoIdx} 
             swipeType="horizontal"
+            allowModify={false}
           />
 
           {/* Navigation Hint */}

@@ -74,9 +74,9 @@ const Feed = () => {
         <>
           {/* Up Arrow */}
           <button
-            onClick={() => simulateVerticalSwipe('up')}
+            onClick={() => {simulateVerticalSwipe('up'); setCurrentVideoIndex(currentVideoIndex - 1);}}
             className={`fixed right-8 top-1/2 -translate-y-20 p-3 rounded-full bg-black/20 backdrop-blur-sm hover:bg-black/40 transition-all ${
-              currentVideoIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100'
+              currentVideoIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer opacity-70 hover:opacity-100'
             }`}
             disabled={currentVideoIndex === 0}
           >
@@ -85,9 +85,9 @@ const Feed = () => {
 
           {/* Down Arrow */}
           <button
-            onClick={() => simulateVerticalSwipe('down')}
+            onClick={() => {simulateVerticalSwipe('down'); setCurrentVideoIndex(currentVideoIndex + 1);}}
             className={`fixed right-8 top-1/2 translate-y-20 p-3 rounded-full bg-black/20 backdrop-blur-sm hover:bg-black/40 transition-all ${
-              currentVideoIndex === videos.length - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-70 hover:opacity-100'
+              currentVideoIndex === videos.length - 1 ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer opacity-70 hover:opacity-100'
             }`}
             disabled={currentVideoIndex === videos.length - 1}
           >

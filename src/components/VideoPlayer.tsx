@@ -10,9 +10,10 @@ interface VideoPlayerProps {
   origVideoIdx: number;
   videos: Video[];
   swipeType: 'vertical' | 'horizontal';
+  allowModify?: boolean;
 }
 
-const VideoPlayer = ({ videos, origVideoIdx, swipeType }: VideoPlayerProps) => {
+const VideoPlayer = ({ videos, origVideoIdx, swipeType, allowModify }: VideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -150,6 +151,7 @@ const VideoPlayer = ({ videos, origVideoIdx, swipeType }: VideoPlayerProps) => {
         </button>
         <button
           onClick={handleToggleLikeVideo}
+          disabled={allowModify === false}
           className="p-2 rounded-full cursor-pointer"
         >
           <motion.div
