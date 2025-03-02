@@ -105,7 +105,7 @@ export DEEPGRAM_API_KEY=your_deepgram_api_key
 
 3. Run the script:
    ```bash
-   python crawler.py
+   python scrolla.py
    ```
 
 ## Running the Frontend
