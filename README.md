@@ -1,6 +1,6 @@
 <div align="center">
 
-# Scrolla ⭐ - Endless scroll , meets endless knowledge
+# Scrolla ⭐ - Endless scroll meets endless knowledge
 
 ![scrolla](https://github.com/user-attachments/assets/3cce01de-57e9-41ea-8c77-43517d33ce22)
 
@@ -19,7 +19,7 @@ Transform articles, PDFs, and web content into engaging short-form videos with c
 
 Scrolla for SacHacks VI. Our dedicated team members include:
 
-| <img src="https://github.com/Neilblaze.png?size=100" alt="Pratyay Banerjee" width="100" /><br />[Pratyay Banerjee](https://github.com/Neilblaze) | <img src="https://github.com/achalbajpai.png?size=100" alt="Achal Bajpai" width="100" /><br />[Achal Bajpai](https://github.com/achalbajpai) | <img src="https://github.com/yashalluri.png?size=100" alt="Yashwanth Alluri" width="100" /><br />[Yashwanth Alluri](https://github.com/yashalluri) | <img src="https://github.com/immedha.png?size=100" alt="Medha Gupta" width="100" /><br />[Medha Gupta](https://github.com/immedha) |
+| <img src="https://github.com/Neilblaze.png?size=100" alt="Pratyay Banerjee" width="100" /><br />[Pratyay Banerjee](https://github.com/Neilblaze) | <img src="https://github.com/immedha.png?size=100" alt="Medha Gupta" width="100" /><br />[Medha Gupta](https://github.com/immedha) | <img src="https://github.com/achalbajpai.png?size=100" alt="Achal Bajpai" width="100" /><br />[Achal Bajpai](https://github.com/achalbajpai) | <img src="https://github.com/yashalluri.png?size=100" alt="Yashwanth Alluri" width="100" /><br />[Yashwanth Alluri](https://github.com/yashalluri) |
 | --- | --- | --- | --- |
 
 
@@ -34,8 +34,9 @@ In today's era, where short-form content like reels dominates social media, we s
 
 - **Multi-Source Input**: Process PDFs, URLs, and web articles
 - **AI-Generated Visuals**: Create stunning images with DALLE-3
-- **Content Transformation**: Convert long-form content to short-form
+- **Content Transformation**: Convert long-form textcontent to short-form reels
 - **YouTube Shorts Format**: Optimized for social media sharing
+- **Social Media-style scrolling**: View the videos in a personal feed like popular social media apps
 - **API Integration**: Powerful OpenAI and Deepgram capabilities
 - **Command-Line Interface**: Simple and efficient processing
 
@@ -55,11 +56,9 @@ In today's era, where short-form content like reels dominates social media, we s
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Building and Deploying](#building-and-deploying)
-- [Usage](#usage)
-  - [Setting Up API Keys](#setting-up-api-keys)
-  - [Running the Application](#running-the-application)
-  - [API Usage Examples](#api-usage-examples)
+- [Running the Backend Server](#running-the-backend-server)
+- [Running the Frontend](#running-the-frontend)
+- [Backend API Usage Examples](#backend-api-usage-examples)
 
 ---
 
@@ -80,21 +79,9 @@ In today's era, where short-form content like reels dominates social media, we s
 
 ---
 
-## Building and Deploying
+## Running the Backend Server
 
-1. Build the project:
-   ```bash
-   npm run build
-   ```
-
-2. Deploy to Firebase:
-   ```bash
-   firebase deploy
-   ```
-
----
-
-## Usage
+Do `cd video_processing`
 
 ### Setting Up API Keys
 
@@ -123,9 +110,31 @@ export DEEPGRAM_API_KEY=your_deepgram_api_key
    python crawler.py
    ```
 
+## Running the Frontend
+
+Do `cd frontend` (or `cd ..` and `cd frontend` if you were in the `video_processing` directory before)
+
+### Setting Up API Keys
+
+Create a `.env` add these keys:
+
+```bash
+VITE_API_KEY
+VITE_AUTH_DOMAIN
+VITE_PROJECT_ID
+VITE_STORAGE_BUCKET
+VITE_MESSAGING_SENDER_ID
+VITE_APP_ID
+VITE_MEASUREMENT_ID
+```
+### Running the Application
+
+1. Do `npm install`. 
+
+2. Do `npm run dev` to run it locally. 
 ---
 
-### API Usage Examples
+## Backend API Usage Examples
 
 #### Process a URL:
 ```bash
