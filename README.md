@@ -71,59 +71,8 @@ cd backend
 python app.py
 ```
 
-## Technical Details
-
-### Frontend
-
--  **React 19** with TypeScript
--  **Redux Toolkit** for state management
--  **Redux Saga** for side effects
--  **React Router** for routing
--  **TailwindCSS** for styling
--  **Firebase SDK** for web
-
-### Backend
-
--  **Flask** web framework
--  **FFmpeg** for video processing
--  **Firebase Admin SDK** for server-side Firebase operations
--  **PyPDF2** for PDF processing
--  **Pillow** for image processing
-
-## API Endpoints
-
-### Health Check
-
-```
-GET /health
-```
-
-### Upload PDF Files
-
-```
-POST /api/upload
-Form data:
-- userId: string (required)
-- files: file[] (required, max 5 for free users, max 50 for pro users)
-```
-
-### Generate Videos
-
-```
-POST /api/generate
-JSON body:
-{
-  "userId": string (required),
-  "files": string[] (required, array of file paths)
-}
-```
-
-### Serve Video
-
-```
-GET /api/videos/<filename>
-```
 
 
 
-This project is licensed under the MIT License.
+
+
