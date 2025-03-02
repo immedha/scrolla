@@ -56,3 +56,23 @@ export const saveFilesToStorage = async (files: FileList) => {
   await Promise.all(uploads);
   return fileUrls;
 };
+
+export const setLikedVideoInDb = async (userId: string, videoIdx: number, liked: boolean) => {
+  try {
+    const docRef = doc(db, "users", userId);
+    const userDoc = await getDoc(docRef);
+    if (userDoc.exists()) {
+      let userData = userDoc.data() as UserDbData;
+      if (userData.videos && userData.videos[videoIdx]) {
+        userData.videos[videoIdx].liked = liked;
+        await setDoc(docRef, userData);
+      } else {
+        throw new Error("Video not found");
+      }
+    } else {
+      throw new Error("User data not found");
+    }
+  } catch (error: any) {
+    throw new Error(error.toString());
+  }
+}

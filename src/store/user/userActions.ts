@@ -40,3 +40,16 @@ export interface saveGeneratedVideosActionFormat {
 }
 
 export const saveGeneratedVideosAction = createAction<saveGeneratedVideosActionPayload>('user/saveGeneratedVideosAction');
+
+export interface setLikedVideoActionPayload {
+  userId: string;
+  videoIdx: number;
+  liked: boolean;
+}
+
+export interface setLikedVideoActionFormat {
+  type: string;
+  payload: setLikedVideoActionPayload
+}
+
+export const setLikedVideoAction = createAction<setLikedVideoActionPayload>('user/setLikedVideoAction');

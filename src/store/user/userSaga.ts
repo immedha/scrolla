@@ -1,10 +1,10 @@
 import { getAdditionalUserInfo, signInWithPopup, signOut, UserCredential } from "firebase/auth";
 import { all, call, put, takeEvery } from "redux-saga/effects";
-import { fetchInitialDataAction, fetchInitialDataActionFormat, generateVideosAction, generateVideosActionFormat, saveGeneratedVideosAction, saveGeneratedVideosActionFormat, signInAction, signOutAction } from "./userActions";
+import { fetchInitialDataAction, fetchInitialDataActionFormat, generateVideosAction, generateVideosActionFormat, saveGeneratedVideosAction, saveGeneratedVideosActionFormat, setLikedVideoAction, setLikedVideoActionFormat, signInAction, signOutAction } from "./userActions";
 import { auth, provider } from "../../firebase";
-import { addVideos, setUserData, setUserId } from "./userSlice";
+import { addVideos, setLikeStatusOfVideo, setUserData, setUserId } from "./userSlice";
 import { setPageStateInfoAction } from "../global/globalActions";
-import { addNewUserToDb, addVideosToDb, fetchUserData } from "../../dbQueries";
+import { addNewUserToDb, addVideosToDb, fetchUserData, setLikedVideoInDb } from "../../dbQueries";
 import { UserDbData, Video } from "../storeStates";
 import { setNewlyGeneratedVideos } from "../global/globalSlice";
 
@@ -56,6 +56,17 @@ function* fetchInitialData(action: fetchInitialDataActionFormat) {
   }
 }
 
+function* setLikedVideo(action: setLikedVideoActionFormat) {
+  try {
+    const { userId, videoIdx, liked } = action.payload; // TODO: use this to set liked status of a video
+    yield call(setLikedVideoInDb, userId, videoIdx, liked);
+    yield put(setLikeStatusOfVideo({ videoIdx, liked }));
+  } catch (error: any) {
+    console.error(error);
+    yield put(setPageStateInfoAction({type: 'error', message: error.message}));
+  }
+}
+
 function* generateVideos(_action: generateVideosActionFormat) {
   try {
     // const { userId, files } = action.payload; // TODO: use this to generate videos
@@ -91,5 +102,6 @@ export default function* userSaga() {
     takeEvery(fetchInitialDataAction.type, fetchInitialData),
     takeEvery(generateVideosAction.type, generateVideos),
     takeEvery(saveGeneratedVideosAction.type, saveGeneratedVideos),
+    takeEvery(setLikedVideoAction.type, setLikedVideo),
   ]);
 }

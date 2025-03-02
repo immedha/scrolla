@@ -31,7 +31,7 @@ const DisplayGeneratedVideos = ({ setGenerationState}: DisplayGeneratedVideosPro
         <button onClick={() => setViewVideoIdx(null)} className="p-2 rounded-full hover:bg-gray-200">
           <BackIcon />
         </button>
-        <VideoPlayer videos={newlyGeneratedVideos} origVideoIdx={viewVideoIdx} />
+        <VideoPlayer videos={newlyGeneratedVideos} origVideoIdx={viewVideoIdx} swipeType="horizontal"/>
       </div>
     );
   }
