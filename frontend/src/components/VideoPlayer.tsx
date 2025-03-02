@@ -77,13 +77,13 @@ const VideoPlayer = ({ videos, origVideoIdx, allowModify }: VideoPlayerProps) =>
 
   return (
     <div
-      className="relative w-full h-screen flex items-center justify-center bg-black"
+      className="relative w-full h-[76vh] flex items-center justify-center bg-black"
       ref={feedRef}
     >
       <motion.video
         ref={videoRef}
         src={videos[currVideoIdx].videoUrl}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain"
         autoPlay={true}
         loop
         muted={isMuted}
