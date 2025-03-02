@@ -13,7 +13,47 @@ const VideoPlayer = ({ videos, origVideoIdx }: VideoPlayerProps) => {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showPauseIcon, setShowPauseIcon] = useState<'pause' | 'play' | null>(null);
-  const [currVideoIdx, _setCurrVideoIdx] = useState(origVideoIdx);
+  const [currVideoIdx, setCurrVideoIdx] = useState(origVideoIdx);
+
+  const startX = useRef(0); // Keep track of starting X position for swipe
+  const isDragging = useRef(false); // Track if mouse is dragging
+
+  // Mouse down event handler
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+    isDragging.current = true;
+    startX.current = 'touches' in e ? e.touches[0].clientX : e.clientX; // Get touch or mouse X position
+  };
+
+  // Mouse move event handler
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging.current) return;
+
+    const moveDistance = 'touches' in e ? e.touches[0].clientX - startX.current : e.clientX - startX.current; // Calculate movement distance
+
+    if (moveDistance < -100) {
+      // Swipe left
+      if (currVideoIdx < videos.length - 1) {
+        setCurrVideoIdx(currVideoIdx + 1); // Move to the next video
+        isDragging.current = false; // Stop dragging after the swipe
+      }
+    } else if (moveDistance > 100) {
+      // Swipe right
+      if (currVideoIdx > 0) {
+        setCurrVideoIdx(currVideoIdx - 1); // Move to the previous video
+        isDragging.current = false; // Stop dragging after the swipe
+      }
+    }
+  };
+
+  // Mouse up event handler
+  const handleMouseUp = () => {
+    isDragging.current = false; // Stop dragging when mouse or touch is released
+  };
+
+  // Mouse leave event handler
+  const handleMouseLeave = () => {
+    isDragging.current = false; // Stop dragging if mouse leaves the video area
+  };
 
   const togglePlayPause = () => {
     const video = videoRef.current;
@@ -33,9 +73,19 @@ const VideoPlayer = ({ videos, origVideoIdx }: VideoPlayerProps) => {
   };
 
   return (
-    <div className="relative w-full h-screen flex items-center justify-center bg-black">
+    <div
+      className="relative w-full h-screen flex items-center justify-center bg-black"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleMouseDown} // Add touch events
+      onTouchMove={handleMouseMove}  // Add touch events
+      onTouchEnd={handleMouseUp}     // Add touch events
+      onTouchCancel={handleMouseUp}  // Add touch events
+    >
       
-      <video
+      <motion.video
         ref={videoRef}
         src={videos[currVideoIdx].videoUrl}
         className="w-full h-full object-cover"
