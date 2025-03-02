@@ -153,7 +153,7 @@ const VideoPlayer = ({ videos, origVideoIdx, swipeType }: VideoPlayerProps) => {
           className="p-2 rounded-full cursor-pointer"
         >
           <motion.div
-            key={videos[currVideoIdx].liked ? "liked" : "disliked"}
+            key={videos[currVideoIdx].liked ? "liked" : "unliked"}
             initial={{ scale: 0.8, opacity: 0.5 }}
             animate={{ scale: 1.2, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0.5 }}
