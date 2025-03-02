@@ -2,7 +2,7 @@
 
 # Scrolla ⭐ - Endless scroll meets endless knowledge
 
-![scrolla](https://firebasestorage.googleapis.com/v0/b/daily-ai-challenge.firebasestorage.app/o/scrolla_logo.png?alt=media&token=b55f7cac-f756-4755-9e26-83ea67bacce0)
+![scrolla](https://firebasestorage.googleapis.com/v0/b/scrolla-e0803.firebasestorage.app/o/scrolla_logo.png?alt=media&token=e00f025f-a808-4422-91a1-ee3a3a6cc35f)
 </div>
 
 View our presentation: https://youtu.be/E2xazE2n2Z8https://youtu.be/E2xazE2n2Z8 
@@ -22,7 +22,7 @@ Scrolla for SacHacks VI. Our dedicated team members are
 ## Why Scrolla ? 
 In today's era, where short-form content like reels dominates social media, we saw an opportunity to bridge the gap between in-depth narratives and engaging video formats. Our mission is to revolutionize content creation by leveraging cutting-edge AI to transform long-form content into captivating short-form videos that bring the best of both worlds together.
 
-![ui](https://firebasestorage.googleapis.com/v0/b/daily-ai-challenge.firebasestorage.app/o/ui.png?alt=media&token=9b7d7b57-f93d-4d58-8a41-cb349ac2c0b7)
+![ui](https://firebasestorage.googleapis.com/v0/b/scrolla-e0803.firebasestorage.app/o/ui.png?alt=media&token=8ae64d2f-ffe4-4a2e-8bdf-76c0ecfd6910)
 <br> 
 
 ## Key Features
@@ -37,7 +37,7 @@ In today's era, where short-form content like reels dominates social media, we s
 
 ## Architecture Flow 
 
-![Architecture (1)](https://firebasestorage.googleapis.com/v0/b/daily-ai-challenge.firebasestorage.app/o/Architecture_1.jpg?alt=media&token=bd8203d6-8b76-42f7-a466-4b4a9336be6b)
+![Architecture (1)](https://firebasestorage.googleapis.com/v0/b/scrolla-e0803.firebasestorage.app/o/Architecture_1.jpg?alt=media&token=44da3b1c-e123-41da-b517-e289379abcf9)
 
 | **Category**           | **Technologies**                                      |
 |------------------------|------------------------------------------------------|
