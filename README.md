@@ -6,12 +6,7 @@
 
 </div>
 
-
-
-
-Transform articles, PDFs, and web content into engaging short-form videos with cutting-edge AI technology.
-
-
+Scrolla transforms articles, PDFs, and web content into engaging short-form videos with cutting-edge AI technology. It lets you enjoy the entertainment of scrolling through social media while effortlessly absorbing educational content at the same time.
 
 > Scrolla combines advanced AI technology with powerful content processing tools to transform text into engaging short-form video content.
 
@@ -61,6 +56,9 @@ In today's era, where short-form content like reels dominates social media, we s
 - [Backend API Usage Examples](#backend-api-usage-examples)
 
 ---
+
+> [!WARNING]  
+> You need the Firebase, Open AI, and Deepgram API keys to be able to run the website. 
 
 ## Getting Started
 
