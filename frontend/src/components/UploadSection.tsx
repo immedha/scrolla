@@ -79,11 +79,11 @@ const UploadSection: FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-3xl mx-auto space-y-6">
-      {/* Drag & Drop Area */}
+    <div className="flex flex-col items-center w-full max-w-3xl mx-auto space-y-6 min-h-[76vh] py-4">
+      {/* Drag & Drop Area - Made smaller */}
       <div 
         className={`
-          w-full border-2 border-dashed rounded-2xl p-4 sm:p-8 md:p-12
+          w-full border-2 border-dashed rounded-2xl p-4 sm:p-6
           ${isDragging ? 'border-purple-500 bg-purple-50' : 'border-purple-200'}
           transition-all duration-200 ease-in-out
         `}
@@ -92,12 +92,12 @@ const UploadSection: FC = () => {
         onDrop={handleDrop}
       >
         <div className="flex flex-col items-center space-y-4">
-          <DocumentIcon className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 text-purple-600" />
+          <DocumentIcon className="w-12 h-12 text-purple-600" />
           <div className="text-center">
-            <h2 className="text-xl sm:text-2xl font-medium">
+            <h2 className="text-xl font-medium">
               Drag & drop <span className="text-purple-600">Pdf</span>'s
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-gray-600">
+            <p className="mt-2 text-sm text-gray-600">
               or <label htmlFor="file-upload" className="text-purple-600 underline cursor-pointer hover:text-purple-700">browse files</label> on your computer
             </p>
           </div>
@@ -110,7 +110,7 @@ const UploadSection: FC = () => {
             onChange={handleFileUpload}
           />
           <button 
-            className="mt-2 px-6 sm:px-8 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors text-sm sm:text-base"
+            className="px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors text-sm"
             onClick={() => document.getElementById('file-upload')?.click()}
           >
             Upload
@@ -118,9 +118,15 @@ const UploadSection: FC = () => {
         </div>
       </div>
 
+      {/* Info Text - Moved up */}
+      <div className="flex justify-center items-center text-xs text-gray-500">
+        <span className="mr-2">ℹ️</span>
+        You can add up to {maxFilesAllowed} Pdf's at once on {isProSubscription ? 'Premium' : 'Freemium'} Tier
+      </div>
+
       {/* File Preview - Show when files are uploaded */}
       {currFiles && (
-        <div className="w-full bg-gray-50 rounded-lg p-4">
+        <div className="w-full bg-gray-50 rounded-lg p-4 overflow-y-auto max-h-[30vh]">
           <h3 className="font-medium mb-2">Selected Files:</h3>
           <div className="space-y-2">
             {Array.from(currFiles).map((file, index) => (
@@ -135,17 +141,11 @@ const UploadSection: FC = () => {
         </div>
       )}
 
-      {/* Info Text */}
-      <div className="flex justify-center items-center text-xs sm:text-sm text-gray-500">
-        <span className="mr-2">ℹ️</span>
-        You can add up to {maxFilesAllowed} Pdf's at once on {isProSubscription ? 'Premium' : 'Freemium'} Tier
-      </div>
-
-      {/* Generate Reels Button - Show only when files are uploaded */}
+      {/* Generate Reels Button */}
       {generationState === 'uploaded' && (
         <button 
           onClick={handleGenerateVideos}
-          className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base font-medium"
+          className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
         >
           Generate Reels
         </button>
@@ -154,9 +154,9 @@ const UploadSection: FC = () => {
       {/* Divider */}
       <div className="w-full h-px bg-gray-200" />
 
-      {/* URL Input Section */}
-      <div className="w-full space-y-3">
-        <p className="text-sm sm:text-base text-gray-600">
+      {/* URL Input Section - Made more compact */}
+      <div className="w-full space-y-2">
+        <p className="text-sm text-gray-600">
           Paste a URL below to upload a link or a file.
         </p>
         <div className="flex flex-col sm:flex-row gap-2">
@@ -164,15 +164,15 @@ const UploadSection: FC = () => {
             type="text"
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
-            placeholder="https://www.apple.com/iphone-6/"
-            className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm sm:text-base"
+            placeholder="https://www.example.com/document.pdf"
+            className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm"
           />
           <div className="flex gap-2 sm:flex-shrink-0">
-            <button className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm sm:text-base">
+            <button className="flex-1 sm:flex-none px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm">
               Upload
             </button>
             <button 
-              className="flex-1 sm:flex-none px-4 sm:px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm sm:text-base"
+              className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm"
               onClick={() => setUrlInput('')}
             >
               Cancel
