@@ -1,0 +1,9 @@
+Crawl4AI
+pysrt
+pydantic-ai
+requests
+PyMuPDF
+Flask
+uvicorn
+asgiref
+quart
