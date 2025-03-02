@@ -7,7 +7,7 @@ const Navigation: FC = () => {
   const activeClass = "text-blue-600";
   
   return (
-    <nav className="fixed bottom-0 left-0 right-0 flex justify-around items-center p-4 bg-white border-t">
+    <nav className="fixed bottom-0 left-0 right-0 flex justify-around items-center p-4 bg-white">
       <Link to="/" className={`p-2 ${location.pathname === '/' ? activeClass : ''}`}>
         <NavHomeIcon />
       </Link>

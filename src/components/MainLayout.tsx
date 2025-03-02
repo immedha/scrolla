@@ -9,10 +9,10 @@ interface MainLayoutProps {
 
 const MainLayout: FC<MainLayoutProps> = ({ children, isLoggedIn }) => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen p-4 bg-[url(background.png)]">
       <Header />
       <main className="pb-16"> {/* Add padding bottom to account for navigation */}
-        {children}
+      {children}
       </main>
       {isLoggedIn && <Navigation />}
     </div>

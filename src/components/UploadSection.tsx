@@ -61,7 +61,7 @@ const UploadSection: FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center gap-4 p-4">
+    <div className="flex flex-col items-center gap-4 p-4 text-white bg-[url(phone.png)]">
       <div className={`relative w-full max-w-md transition-opacity ${isLoading ? 'opacity-50' : ''}`}>
         <input
           type="file"
@@ -108,6 +108,7 @@ const UploadSection: FC = () => {
         Generate reels
       </button>
     </div>
+
   );
 };
 
