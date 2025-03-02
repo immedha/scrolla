@@ -8,7 +8,7 @@ import DisplayGeneratedVideos from './DisplayGeneratedVideos';
 import GeneratingVideos from './GeneratingVideos';
 import { saveFilesToStorage } from '../dbQueries';
 import { DocumentIcon } from '@heroicons/react/24/outline';
-
+// TODO: add a url input section
 const UploadSection: FC = () => {
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId) || '';
