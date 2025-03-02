@@ -56,16 +56,7 @@ const Profile = () => {
             videos={videos.filter(video => video.liked)} 
             origVideoIdx={viewVideoIdx} 
             allowModify={false}
-          />
-
-          {/* Navigation Hint */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
-            <div className="px-4 py-2 bg-black/40 backdrop-blur-sm rounded-full">
-              <p className="text-white/70 text-sm">
-                Swipe left or right to navigate
-              </p>
-            </div>
-          </div>
+          />   
         </div>
       </div>
     );
