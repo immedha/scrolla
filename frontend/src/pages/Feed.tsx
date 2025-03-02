@@ -20,7 +20,7 @@ const Feed = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto relative">
+    <div className="h-[calc(100vh-10rem)] aspect-[9/16] mx-auto">
       <VideoPlayer 
         videos={videos} 
         origVideoIdx={currentVideoIndex} 
