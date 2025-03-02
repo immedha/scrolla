@@ -39,6 +39,9 @@ In today's era, where short-form content like reels dominates social media, we s
 - **API Integration**: Powerful OpenAI and Deepgram capabilities
 - **Command-Line Interface**: Simple and efficient processing
 
+## Architecture Flow 
+
+![Architecture (1)](https://github.com/user-attachments/assets/08f970b6-c98b-435d-81be-e9b0a9fb5bdf)
 
 | **Category**           | **Technologies**                                      |
 |------------------------|------------------------------------------------------|
@@ -126,12 +129,12 @@ export DEEPGRAM_API_KEY=your_deepgram_api_key
 
 #### Process a URL:
 ```bash
-curl -X POST http://127.0.0.1:5000/process -F "type=url" -F "url=https://example.com/article"
+curl -X POST http://127.0.0.1:8000/process -F "type=url" -F "url=https://example.com/article"
 ```
 
 #### Process a PDF:
 ```bash
-curl -X POST http://127.0.0.1:5000/process -F "type=pdf" -F "pdfs=@/path/to/document.pdf"
+curl -X POST http://127.0.0.1:8000/process -F "type=pdf" -F "pdfs=@/path/to/document.pdf"
 ```
 
 
