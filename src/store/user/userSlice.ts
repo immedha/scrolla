@@ -7,6 +7,7 @@ const initialState: UserSliceState = {
   userEmail: null,
   isProSubscription: false,
   videos: [],
+  profilePic: null,
 }
 
 const userSlice = createSlice({
@@ -41,15 +42,18 @@ const userSlice = createSlice({
       const { videoIdx, liked } = action.payload;
       state.videos[videoIdx].liked = liked;
     },
+    setProfilePic: (state, action) => {
+      state.profilePic = action.payload;
+    },
   }
 });
 
-export const { setLikeStatusOfVideo, setUserData, setUserId, setUserName, setUserEmail, setProSubscription, setVideos, addVideos } = userSlice.actions;
+export const { setLikeStatusOfVideo, setUserData, setUserId, setUserName, setUserEmail, setProSubscription, setVideos, addVideos, setProfilePic } = userSlice.actions;
 export const selectUserId = (state: allSlicesState) => state.user.userId;
 export const selectUserName = (state: allSlicesState) => state.user.userName;
 export const selectUserEmail = (state: allSlicesState) => state.user.userEmail;
 export const selectVideos = (state: allSlicesState) => state.user.videos;
 export const selectProSubscription = (state: allSlicesState) => state.user.isProSubscription;
-
+export const selectProfilePic = (state: allSlicesState) => state.user.profilePic;
 
 export default userSlice.reducer;

@@ -53,3 +53,9 @@ export interface setLikedVideoActionFormat {
 }
 
 export const setLikedVideoAction = createAction<setLikedVideoActionPayload>('user/setLikedVideoAction');
+
+export const updateProfilePicAction = createAction<{
+  file: File;
+}>('user/updateProfilePic');
+
+export const setProfilePicAction = createAction<string>('user/setProfilePic');
