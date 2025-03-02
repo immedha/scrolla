@@ -70,12 +70,19 @@ function* setLikedVideo(action: setLikedVideoActionFormat) {
 function* generateVideos(_action: generateVideosActionFormat) {
   try {
     // const { userId, files } = action.payload; // TODO: use this to generate videos
-    const videos: Video[] = Array.from({length: 10}, (_, i) => ({
-      videoUrl: `https://www.youtube.com/watch?v=${i}`,
+    let videos: Video[] = [];
+    videos[0] = {
       liked: false,
-      title: `Video ${i}`,
-      category: 'misc'
-    }));
+      videoUrl: 'https://firebasestorage.googleapis.com/v0/b/scrolla-e0803.firebasestorage.app/o/intro_coding.mp4?alt=media&token=a96c793c-8199-478c-9ab9-8af5e1964ee3',
+      title: 'Intro to Coding',
+      category: 'computer science'
+    }
+    videos[1] = {
+      liked: false,
+      videoUrl: 'https://firebasestorage.googleapis.com/v0/b/scrolla-e0803.firebasestorage.app/o/reels.mp4?alt=media&token=88fb27ea-0704-480b-9a1c-499e278e612a',
+      title: 'Impact of Reels on Academic Performance',
+      category: 'social media'
+    }
     yield put(setNewlyGeneratedVideos(videos));
   } catch (error: any) {
     console.error(error);

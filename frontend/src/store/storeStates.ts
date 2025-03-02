@@ -11,6 +11,7 @@ export interface GlobalSliceState {
 
 export interface UserSliceState extends UserDbData {
   userId: string | null;
+  profilePic: string | null;
 }
 
 export interface Video {
