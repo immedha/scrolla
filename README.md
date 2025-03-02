@@ -1,23 +1,5 @@
 # Scrolla
 
-A modern web application that converts PDF files into video reels using FFmpeg and Python backend with React frontend.
-
-## Project Structure
-
-This project consists of two main parts:
-
-1. **Frontend**: React/TypeScript application built with Vite
-2. **Backend**: Python/Flask API for PDF to video conversion
-
-## Features
-
--  User authentication via Firebase
--  PDF file upload
--  PDF to video conversion using FFmpeg
--  Video playback and management
--  Firebase Storage for file storage
--  Firebase Firestore for database
-
 ## Prerequisites
 
 -  Node.js 18+ and npm
@@ -43,6 +25,7 @@ npm install
 # Create a .env.local file with your Firebase config
 cp .env.example .env.local
 # Edit .env.local with your Firebase configuration
+# npm run dev
 ```
 
 ### 3. Backend Setup
@@ -87,16 +70,6 @@ npm run dev
 cd backend
 python app.py
 ```
-
-## How It Works
-
-1. **User Authentication**: Users can sign in using Firebase Authentication
-2. **File Upload**: Users upload PDF files through the frontend
-3. **Backend Processing**:
-   -  The backend receives the PDF files and extracts images
-   -  FFmpeg converts the images into a video
-   -  The video is uploaded to Firebase Storage
-4. **Video Playback**: Users can view and manage their generated videos
 
 ## Technical Details
 
@@ -151,14 +124,6 @@ JSON body:
 GET /api/videos/<filename>
 ```
 
-## Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
 
 This project is licensed under the MIT License.
