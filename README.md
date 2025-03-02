@@ -12,7 +12,7 @@ Scrolla transforms articles, PDFs, and web content into engaging short-form vide
 
 ## About Team Scrolla
 
-Scrolla for SacHacks VI. Our dedicated team members include:
+Scrolla for SacHacks VI. Our dedicated team members are
 
 | <img src="https://github.com/Neilblaze.png?size=100" alt="Pratyay Banerjee" width="100" /><br />[Pratyay Banerjee](https://github.com/Neilblaze) | <img src="https://github.com/immedha.png?size=100" alt="Medha Gupta" width="100" /><br />[Medha Gupta](https://github.com/immedha) | <img src="https://github.com/achalbajpai.png?size=100" alt="Achal Bajpai" width="100" /><br />[Achal Bajpai](https://github.com/achalbajpai) | <img src="https://github.com/yashalluri.png?size=100" alt="Yashwanth Alluri" width="100" /><br />[Yashwanth Alluri](https://github.com/yashalluri) |
 | --- | --- | --- | --- |
